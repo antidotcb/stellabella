@@ -15,16 +15,7 @@ namespace stellabellum {
 
         virtual void enter();
 
-        void _addAsteroid() 
-        {
-            scene::IMeshSceneNode* asteroid = m_scene->addMeshSceneNode(m_asteroidMesh);
-            if(asteroid) {
-                asteroid->setPosition(core::vector3df(0,0,30));
-                asteroid->setMaterialTexture(0, getGame()->getTextureByName("asteroid"));
-                asteroid->setMaterialFlag(video::EMF_LIGHTING, false);
-            }
-            m_asteroids.push_back(asteroid);
-        }
+        void _addAsteroid();
 
         virtual void leave();
         virtual void update( const f32 delta );
@@ -37,7 +28,8 @@ namespace stellabellum {
         void _moveCamera();
 
         typedef std::vector<scene::ISceneNode *> AsteroidList;
-
+        
+        IRandomizer * m_random;
         IAnimatedMesh * m_asteroidMesh;
         ICameraSceneNode * m_camera;
         AsteroidList m_asteroids;
