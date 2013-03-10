@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stellabella", "stellabella.vcxproj", "{2EA90D77-D1D0-4AC9-B832-9030A1C77318}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stellabellum", "stellabellum.vcxproj", "{2EA90D77-D1D0-4AC9-B832-9030A1C77318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
