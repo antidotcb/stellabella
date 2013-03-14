@@ -40,24 +40,29 @@ namespace stellabellum {
         void run();
 
         ISceneManager * createNewScene();
-        //void ReleaseInput() {
-        //    m_scene->in
-        //}
 
-        IrrlichtDevice & getDevice() { return *m_device; }
+        IrrlichtDevice * getDevice() { return m_device; }
 
         const int & getFPS() const { return m_fps;}
-        const InputReceiver & getInput() const { return m_receiver; }
+        const InputReceiver * getInput() const { return &m_receiver; }
 
-        video::ITexture * getTextureByName(core::stringw texture) {
+        video::ITexture * getRocketTexture(core::stringw texture) {
+            return m_driver->getTexture("d:\\xpn_2013\\export\\rocket.tga");
+        }
+
+        video::ITexture * getAsteroidTexture(core::stringw texture) {
             return m_driver->getTexture("d:\\xpn_2013\\export\\asteroid.tga");
         }
-    protected:
-        void _initialize();
-        void _updateFPS();
-        void _render();
 
-        Screen * _getCurrentScreen();
+        video::ITexture * getPlayerTexture(core::stringw texture) {
+            return m_driver->getTexture("d:\\xpn_2013\\export\\fighter.tga");
+        }
+    protected:
+        void init();
+        void updateFPS();
+        void render();
+
+        Screen * getActiveScreen();
     private:
         Options m_options;
 
@@ -66,7 +71,8 @@ namespace stellabellum {
         IrrlichtDevice* m_device;
         video::IVideoDriver* m_driver;
         scene::ISceneManager* m_scene;
-        
+        core::array<SJoystickInfo> m_joystickInfo;
+
         static const TCHAR * m_title;
 
         int m_fps;

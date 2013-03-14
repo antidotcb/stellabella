@@ -16,6 +16,10 @@ namespace stellabellum {
         StateMachine(): m_previous(0), m_current(0) {}
         
         virtual ~StateMachine(void) {
+            if (m_current) {
+                m_current->leave();
+            }
+
             StateList::const_iterator it;
             for(it = m_states.begin(); it != m_states.end(); ++it) {
                 delete it->second;
@@ -23,12 +27,12 @@ namespace stellabellum {
             m_states.clear();
         }
 
-        void addState(State * state) {
+        void addState(State * state, const bool enterIfFirst = true) {
             if (state) {
                 int id = state->getId();
                 m_states[id] = state;
 
-                if (!m_current) {
+                if (!m_current && enterIfFirst) {
                     _enterState(state);
                 }
             } else {
@@ -64,7 +68,7 @@ namespace stellabellum {
         virtual void _enterState( State * next ) {
             if (m_current) {
                 if (!m_current->m_inited) {
-                    m_current->_init(this);
+                    m_current->init(this);
                 }
 
                 m_current->leave();
@@ -73,7 +77,7 @@ namespace stellabellum {
 
             if (next) {
                 if (!next->m_inited) {
-                    next->_init(this);
+                    next->init(this);
                 }
 
                 next->enter();

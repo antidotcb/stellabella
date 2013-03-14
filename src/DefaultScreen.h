@@ -4,18 +4,19 @@
 using namespace irr;
 
 #include "Screen.h"
+#include "Asteroid.h"
 
 namespace stellabellum {
+
     class DefaultScreen: public Screen {
-    public:
-    
+    public:    
         static const int DefaultScreenID = 0;
         
         DefaultScreen(void);
 
         virtual void enter();
 
-        void _addAsteroid();
+        void addRocket();
 
         virtual void leave();
         virtual void update( const f32 delta );
@@ -25,14 +26,19 @@ namespace stellabellum {
         virtual int getId() { return DefaultScreenID; }
     
     private:
-        void _moveCamera();
+        void moveCamera();
+        void movePlayer(const f32 delta);
 
-        typedef std::vector<scene::ISceneNode *> AsteroidList;
-        
         IRandomizer * m_random;
         IAnimatedMesh * m_asteroidMesh;
+        IAnimatedMesh * m_playerMesh;
+        IAnimatedMesh * m_rocketMesh;
+        IAnimatedMesh * m_enemyMeshes[4];
         ICameraSceneNode * m_camera;
-        AsteroidList m_asteroids;
+        
+        ISceneNode * m_player;
+
+        u32 m_lastAsteroid;
     };
 
 }

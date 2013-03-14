@@ -13,7 +13,7 @@ namespace stellabellum {
         Screen(): m_scene(0), m_bgColor(255,255,0,255) {}
 
         virtual void init() {
-            m_scene = getGame()->createNewScene();
+            initScene();
         }
 
         virtual void render() {
@@ -21,15 +21,36 @@ namespace stellabellum {
         }
 
         virtual ~Screen() {
-            m_scene->drop();
+            dropScene();
+
         }
 
         const video::SColor & getBgColor() inline const { return m_bgColor; }
     protected:
+        void initScene() {
+            dropScene();
+            m_scene = getGame()->createNewScene();
+        }
+
+        void dropScene() {
+            if (m_scene) {
+                m_scene->drop();
+                m_scene = 0;
+            }
+        }
+
         virtual Game * getGame()  {
             return dynamic_cast<Game*>(_getStateMachine());
         }
 
+        void setBgColor(const video::SColor & color) {
+            m_bgColor = color;
+        }
+
+        scene::ISceneManager * getScene() {
+            return m_scene;
+        }
+    private:
         scene::ISceneManager* m_scene;
         video::SColor m_bgColor;
     };

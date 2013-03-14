@@ -11,3 +11,6 @@
 #include <tchar.h>
 
 #include <irrlicht.h>
+#include <vld.h>
+
+#include <boost/foreach.hpp>

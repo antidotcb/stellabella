@@ -25,7 +25,7 @@ namespace stellabellum {
                 break;
 
             case EMIE_RMOUSE_LEFT_UP:
-                m_mouseState.rightBtnPressed = true;
+                m_mouseState.rightBtnPressed = false;
                 break;
 
             case EMIE_LMOUSE_PRESSED_DOWN:

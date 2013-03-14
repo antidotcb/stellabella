@@ -22,7 +22,7 @@ namespace stellabellum {
             return m_game;
         }
     private:
-        virtual void _init(StateMachine * game) {
+        void init(StateMachine * game) {
             if (game) {
                 m_game = game;
             } else {

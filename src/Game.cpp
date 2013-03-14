@@ -4,7 +4,7 @@
 
 namespace stellabellum {
     Game::Game(Options & options): m_options(options) {
-        _initialize();
+        init();
     }
 
     void Game::run()
@@ -17,12 +17,11 @@ namespace stellabellum {
             const u32 now = m_device->getTimer()->getTime();        
             const f32 frameDeltaTime = (f32)(now - then) / 1000.f; // Time in seconds
 
-            _updateFPS();
+            updateFPS();
 
             update(frameDeltaTime);
 
-            _render();
-
+            render();
 
             Sleep(0);
         }
@@ -32,7 +31,7 @@ namespace stellabellum {
         m_device->drop();
     }
 
-    void Game::_initialize() {
+    void Game::init() {
         core::dimension2d<u32> windowSize(m_options.Width, m_options.Height);
         // creation of rendering device
         m_device = createDevice(m_options.Driver, windowSize, 16,
@@ -43,12 +42,14 @@ namespace stellabellum {
             throw std::exception("Cannot initialize rendering device.");
         }
 
+        m_device->activateJoysticks(m_joystickInfo);
+
         m_driver = m_device->getVideoDriver();
         m_scene = m_device->getSceneManager();
     }
 
-    void Game::_render() {
-        Screen * scr = _getCurrentScreen();
+    void Game::render() {
+        Screen * scr = getActiveScreen();
 
         if (scr) {
             m_driver->beginScene(true, true, scr->getBgColor());
@@ -57,11 +58,11 @@ namespace stellabellum {
         }
     }
 
-    Screen * Game::_getCurrentScreen() {
+    Screen * Game::getActiveScreen() {
         return dynamic_cast<Screen *>(_getCurrentState());
     }
 
-    void Game::_updateFPS() {
+    void Game::updateFPS() {
         int fps = m_driver->getFPS();
         if (m_fps != fps) {
             m_fps = fps;
@@ -77,7 +78,8 @@ namespace stellabellum {
     }
 
     ISceneManager * Game::createNewScene() {
-        return m_scene->createNewSceneManager();
+        ISceneManager * scene = m_scene->createNewSceneManager();
+        return scene;
     }
 
     const TCHAR * Game::m_title = L"Stella Bellum";
