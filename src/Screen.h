@@ -7,51 +7,38 @@ using namespace irr;
 #include "Game.h"
 
 namespace stellabellum {
+    namespace game {
 
-    class Screen: public State {
+    class Screen: public states::State {
     public:
-        Screen(): m_scene(0), m_bgColor(255,255,0,255) {}
+        Screen();
 
-        virtual void init() {
-            initScene();
-        }
+        virtual ~Screen();
 
-        virtual void render() {
-            m_scene->drawAll();
-        }
+        const video::SColor& getBgColor() inline const { return m_backgroundColor; }
+            
+            
+            virtual void init();
 
-        virtual ~Screen() {
-            dropScene();
+        virtual void render();
 
-        }
-
-        const video::SColor & getBgColor() inline const { return m_bgColor; }
+ 
     protected:
-        void initScene() {
-            dropScene();
-            m_scene = getGame()->createNewScene();
-        }
 
-        void dropScene() {
-            if (m_scene) {
-                m_scene->drop();
-                m_scene = 0;
-            }
-        }
+        scene::ISceneManager* getScene();
 
-        virtual Game * getGame()  {
-            return dynamic_cast<Game*>(_getStateMachine());
-        }
+        void initScene();
 
-        void setBgColor(const video::SColor & color) {
-            m_bgColor = color;
-        }
+        void dropScene();
 
-        scene::ISceneManager * getScene() {
-            return m_scene;
-        }
+        virtual Game* getContainer();
+
+        void setBgColor(const video::SColor& color);
+
     private:
+        video::SColor m_backgroundColor;
         scene::ISceneManager* m_scene;
-        video::SColor m_bgColor;
     };
+
+    }
 }

@@ -1,45 +1,35 @@
 #pragma once
 
 namespace stellabellum {
+    namespace states {
 
-    class StateMachine;
+        class StateMachine;
 
-    class State {
-    public:
-        State(): m_inited(false), m_game(0) {}
+        class State {
+        public:
+            State();
+            virtual ~State(void);
 
-        virtual void enter() = 0;
-        virtual void leave() = 0;
-        virtual void init() = 0;
+            virtual void enter() = 0;
+            virtual void leave() = 0;
+            virtual void init() = 0;
 
-        virtual void update(const f32 delta) = 0;
+            virtual void update(const f32 delta) = 0;
 
-        virtual int getId() = 0;
-
-        virtual ~State(void) {}
-    protected:
-        virtual StateMachine * _getStateMachine() {
-            return m_game;
-        }
-    private:
-        void init(StateMachine * game) {
-            if (game) {
-                m_game = game;
-            } else {
-                DebugBreak();
-                throw std::exception("Null pointer as state based game.");
+            virtual int getId() = 0;            
+        protected:
+            virtual StateMachine* getStateMachine() inline const {
+                return m_machine;
             }
 
-            if (!m_inited) {
-                init();
-                m_inited = true;
-            }
-        }
+        private:
+            void setup(StateMachine* machine);
 
-        bool m_inited;
-        StateMachine * m_game;
+            bool m_inited;
+            StateMachine* m_machine;
 
-        friend class StateMachine;
-    };
+            friend class StateMachine;
+        };
 
+    }
 }

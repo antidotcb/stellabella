@@ -5,16 +5,17 @@
 namespace stellabellum {
     namespace entities {
 
-        class Asteroid: public Entity {
+        class Player: public Entity {
         public:
-            Asteroid(game::World* world, scene::ISceneNode* parent,
+            Player(game::World* world, scene::ISceneNode* parent,
                 scene::ISceneManager* mgr, s32 id,
-                scene::IAnimatedMesh* mesh, video::ITexture* tex,
                 const core::vector3df& position = core::vector3df(0,0,0),
                 const core::vector3df& rotation = core::vector3df(0,0,0),
                 const core::vector3df& scale = core::vector3df(1,1,1));
 
-            virtual bool update(const float delta);
+            virtual bool update(const game::Game * g, const float delta);
+
+            void Player::move(const game::Game * g, const f32 delta);
         };
 
     }

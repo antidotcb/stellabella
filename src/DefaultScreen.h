@@ -4,11 +4,10 @@
 using namespace irr;
 
 #include "Screen.h"
-#include "Asteroid.h"
 
 namespace stellabellum {
 
-    class DefaultScreen: public Screen {
+    class DefaultScreen: public game::Screen {
     public:    
         static const int DefaultScreenID = 0;
         
@@ -29,16 +28,17 @@ namespace stellabellum {
         void moveCamera();
         void movePlayer(const f32 delta);
 
-        IRandomizer * m_random;
-        IAnimatedMesh * m_asteroidMesh;
-        IAnimatedMesh * m_playerMesh;
-        IAnimatedMesh * m_rocketMesh;
-        IAnimatedMesh * m_enemyMeshes[4];
-        ICameraSceneNode * m_camera;
+         IRandomizer* m_random;
+//         IAnimatedMesh* m_asteroidMesh;
+//         IAnimatedMesh* m_playerMesh;
+//         IAnimatedMesh* m_rocketMesh;
+//         IAnimatedMesh* m_enemyMeshes[4];
+//         ICameraSceneNode* m_camera;
         
-        ISceneNode * m_player;
+        //ISceneNode* m_player;
 
-        u32 m_lastAsteroid;
+        //u32 m_lastAsteroid;
+        game::World * m_world;
     };
 
 }

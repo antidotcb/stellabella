@@ -4,9 +4,9 @@
 
 using namespace stellabellum;
 
-class StellaBellum: public Game {
+class StellaBellum: public game::Game {
 public:
-    StellaBellum(Options & options): Game(options) {
+    StellaBellum(Options& options): game::Game(options) {
         addState(new DefaultScreen());
     }
 };
@@ -14,11 +14,11 @@ public:
 int APIENTRY _tWinMain(HINSTANCE hInst, HINSTANCE, LPTSTR, int) {
     int result = -1;
     try {
-        Game::Options options;
+        game::Game::Options options;
         StellaBellum game(options);
         game.run();
         result = 0;
-    } catch (std::exception & e) {
+    } catch (std::exception& e) {
         MessageBoxA(GetTopWindow(0), e.what(), "ERROR", MB_OK | MB_TOPMOST);
     } catch (...) {
         MessageBoxA(GetTopWindow(0), "Unknown exception", "ERROR", MB_OK | MB_TOPMOST);

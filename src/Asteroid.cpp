@@ -1,32 +1,38 @@
-#include "StdAfx.h"
-#include "Game.h"
+#include "stellabellum.h"
 #include "Asteroid.h"
 
 namespace stellabellum {
+    namespace entities {
 
-    Asteroid::Asteroid(
-        Game * game, ISceneNode* parent, ISceneManager* mgr, s32 id,
-        scene::IAnimatedMesh * mesh, video::ITexture * tex,
-        const core::vector3df& position,
-        const core::vector3df& rotation,
-        const core::vector3df& scale):
-    Entity(0, parent, mgr, id, position, rotation, scale )
-    {
-        setAutomaticCulling(scene::EAC_OFF);
+        Asteroid::Asteroid(game::World* world, scene::ISceneNode* parent,
+            scene::ISceneManager* mgr, s32 id,
+            scene::IAnimatedMesh* mesh, video::ITexture* tex,
+            const core::vector3df& position,
+            const core::vector3df& rotation,
+            const core::vector3df& scale)
 
-        m_child = mgr->addAnimatedMeshSceneNode(mesh, this, id);
-        
-        m_child->setPosition(core::vector3df(0,0,0));
-        m_child->setMaterialTexture(0, tex);
-        m_child->setMaterialFlag(video::EMF_LIGHTING, false);
-    }
+            :Entity(0, parent, mgr, id, position, rotation, scale )
+        {
+            scene::IAnimatedMeshSceneNode* asteroidMeshNode =
+                mgr->addAnimatedMeshSceneNode(mesh, this, id);
 
-    bool Asteroid::update(float delta) {
-        m_velocity += m_acceleration;
-        core::vector3df movement = m_velocity * delta;
+            asteroidMeshNode->setMaterialTexture(0, tex);
+            asteroidMeshNode->setMaterialFlag(video::EMF_LIGHTING, false);
+        }
 
-        setPosition(getPosition() + movement);
+        bool Asteroid::update(const float delta) {
+            m_velocity += m_acceleration;
 
-        return true;
+            core::vector3df position = getPosition();
+            core::vector3df positionChange = m_velocity * delta;
+            setPosition(position + positionChange);
+
+            core::vector3df rotation = this->getRotation();
+            core::vector3df rotationChange = m_angularvelocity * delta;
+            setRotation(rotation + rotationChange);
+
+            return true;
+        }
+
     }
 }

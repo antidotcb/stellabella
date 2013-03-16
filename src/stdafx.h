@@ -13,4 +13,7 @@
 #include <irrlicht.h>
 #include <vld.h>
 
+#include <string>
+#include <sstream>
+
 #include <boost/foreach.hpp>

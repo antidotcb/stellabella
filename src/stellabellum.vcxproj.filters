@@ -9,60 +9,87 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="stellabellum">
+      <UniqueIdentifier>{7530fda9-89db-4266-a8ca-fa2aeb883dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stellabellum\entities">
+      <UniqueIdentifier>{51462a1f-08f0-4b15-a97d-87ec14e05c72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stellabellum\states">
+      <UniqueIdentifier>{d09e0e13-7fd1-44d6-912c-eedf53da6b1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stellabellum\game">
+      <UniqueIdentifier>{9e0e44f2-41ae-4909-abdb-f096df8083f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Screen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="stellabellum.h">
+      <Filter>stellabellum</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
-      <Filter>Header Files</Filter>
+      <Filter>stellabellum\states</Filter>
     </ClInclude>
     <ClInclude Include="StateMachine.h">
-      <Filter>Header Files</Filter>
+      <Filter>stellabellum\states</Filter>
     </ClInclude>
-    <ClInclude Include="InputReceiver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Entity.h">
+      <Filter>stellabellum\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>stellabellum\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.h">
+      <Filter>stellabellum\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Screen.h">
+      <Filter>stellabellum\game</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>stellabellum\game</Filter>
     </ClInclude>
     <ClInclude Include="DefaultScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+      <Filter>stellabellum\game</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Asteroid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stellabellum.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Input.h">
+      <Filter>stellabellum\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputReceiver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DefaultScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>stellabellum\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>stellabellum\entities</Filter>
     </ClCompile>
     <ClCompile Include="Asteroid.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>stellabellum\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="World.cpp">
+      <Filter>stellabellum\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>stellabellum\game</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultScreen.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>stellabellum\states</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>stellabellum\states</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>stellabellum\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>stellabellum\game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

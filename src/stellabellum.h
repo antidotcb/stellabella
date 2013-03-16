@@ -5,21 +5,21 @@
 using namespace irr;
 
 namespace stellabellum {
+    namespace states {
+        class State;
+        class StateMachine;
+    }
 
-    class World;
-    class Entity;
-    class Asteroid;
+    namespace entities {
+        class Entity;
+        class Asteroid;
+        class Player;
+    }
 
-    class State;
-    class StateMachine;
-
-    class Screen;
-    class Game;
+    namespace game {
+        class World;
+        class GameDirector;
+        class Screen;
+        class Game;
+    }
 }
-
-#include "Entity.h"
-#include "Asteroid.h"
-#include "State.h"
-#include "StateMachine.h"
-#include "Game.h"
-#include "Screen.h"
