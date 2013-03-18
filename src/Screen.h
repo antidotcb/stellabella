@@ -9,13 +9,13 @@ using namespace irr;
 namespace stellabellum {
     namespace game {
 
-    class Screen: public states::State {
+    class CScreen: public states::CState {
     public:
-        Screen();
+        CScreen();
 
-        virtual ~Screen();
+        virtual ~CScreen();
 
-        const video::SColor& getBgColor() inline const { return m_backgroundColor; }
+        const video::SColor& getBgColor() inline const { return BackgroundColor; }
             
             
             virtual void init();
@@ -31,13 +31,13 @@ namespace stellabellum {
 
         void dropScene();
 
-        virtual Game* getContainer();
+        virtual CGame* getContainer();
 
         void setBgColor(const video::SColor& color);
 
     private:
-        video::SColor m_backgroundColor;
-        scene::ISceneManager* m_scene;
+        video::SColor BackgroundColor;
+        scene::ISceneManager* Scene;
     };
 
     }

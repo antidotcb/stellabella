@@ -7,31 +7,33 @@
 namespace stellabellum {
     namespace states {
 
-        class StateMachine {
+        class CStateMachine {
         protected:
-            typedef std::map<int, State *> StateList;
+            typedef std::map<int, CState *> StateList;
 
         public:
-            StateMachine(): m_previous(0), m_current(0) {}
+            CStateMachine()
+                : Previous(0), Current(0)
+            {}
 
-            virtual ~StateMachine(void) {
-                if (m_current) {
-                    m_current->leave();
+            virtual ~CStateMachine(void) {
+                if (Current) {
+                    Current->leave();
                 }
 
                 StateList::const_iterator it;
-                for(it = m_states.begin(); it != m_states.end(); ++it) {
+                for(it = States.begin(); it != States.end(); ++it) {
                     delete it->second;
                 }
-                m_states.clear();
+                States.clear();
             }
 
-            void addState(State* state, const bool enterIfFirst = true) {
+            void addState(CState* state, const bool enterIfFirst = true) {
                 if (state) {
                     int id = state->getId();
-                    m_states[id] = state;
+                    States[id] = state;
 
-                    if (!m_current && enterIfFirst) {
+                    if (!Current && enterIfFirst) {
                         enter(state);
                     }
                 } else {
@@ -40,35 +42,35 @@ namespace stellabellum {
             }
 
             void enterState(int id) {
-                State* next = m_states.at(id);
+                CState* next = States.at(id);
                 enter(next);
             }
 
             void returnBack() {
-                if (m_previous) {
-                    enter(m_previous);
+                if (Previous) {
+                    enter(Previous);
                 } else {
                     throw std::exception("Null pointer as previous game state.");
                 }
             }
         protected:
             void update(const f32 delta) {
-                if (m_current) {
-                    m_current->update(delta);
+                if (Current) {
+                    Current->update(delta);
                 }
             }
 
-            State* getCurrentState() {
-                return m_current;
+            CState* getCurrentState() {
+                return Current;
             }
 
-            virtual void enter(State* next) {
-                if (m_current) {
-                    m_current->setup(this);
+            virtual void enter(CState* next) {
+                if (Current) {
+                    Current->setup(this);
 
-                    m_current->leave();
+                    Current->leave();
                 }
-                m_previous = m_current;
+                Previous = Current;
 
                 if (next) {
                     next->setup(this);
@@ -77,13 +79,13 @@ namespace stellabellum {
                 } else {
                     throw std::exception("Null pointer as next state.");
                 }
-                m_current = next;
+                Current = next;
             }
 
         private:
-            StateList m_states;
-            State* m_current;
-            State* m_previous;
+            StateList States;
+            CState* Current;
+            CState* Previous;
         };
 
     }

@@ -5,17 +5,37 @@
 namespace stellabellum {
     namespace entities {
 
-        class Player: public Entity {
+        class CPlayer: public CEntity {
         public:
-            Player(game::World* world, scene::ISceneNode* parent,
-                scene::ISceneManager* mgr, s32 id,
-                const core::vector3df& position = core::vector3df(0,0,0),
-                const core::vector3df& rotation = core::vector3df(0,0,0),
-                const core::vector3df& scale = core::vector3df(1,1,1));
+            CPlayer(game::CWorld* world, scene::ISceneManager* scene,
+                const core::vector3df& position = core::vector3df(0,0,0));
 
-            virtual bool update(const game::Game * g, const float delta);
+            virtual ~CPlayer();
 
-            void Player::move(const game::Game * g, const f32 delta);
+            virtual bool update(const game::CGame * g, const float delta);
+
+            void move(const game::CGame * g, const f32 delta);
+
+            void fitIntoConstrains(core::vector3df& position);
+            
+            void makeShot();
+
+            f32 getRocketAcceleration();
+            f32 getPlayerVelocity();
+            f32 getRocketVelocity();
+        protected:
+            virtual void updateSizes();
+
+        private:
+            u32 LastRocketShotTime;
+            bool WingLastShot;
+
+            scene::ISceneNode* LeftWing;
+            scene::ISceneNode* RightWing;
+
+            core::vector3df Rotation;
+            f32 Width;
+            f32 Height;
         };
 
     }

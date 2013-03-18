@@ -4,22 +4,22 @@
 namespace stellabellum {
     namespace states {
 
-        stellabellum::states::State::State()
-            :m_inited(false),
-            m_machine(0) {}
+        stellabellum::states::CState::CState()
+            :IsInited(false),
+            Machine(0) {}
 
-        stellabellum::states::State::~State() {}
+        stellabellum::states::CState::~CState() {}
 
-        void State::setup(StateMachine* machine) {
+        void CState::setup(CStateMachine* machine) {
             if (machine) {
-                m_machine = machine;
+                Machine = machine;
             } else {
                 throw std::exception("Null pointer as state machine.");
             }
 
-            if (!m_inited) {
+            if (!IsInited) {
                 init();
-                m_inited = true;
+                IsInited = true;
             }
         }
 

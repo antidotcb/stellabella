@@ -6,16 +6,20 @@
 namespace stellabellum {
     namespace game {
 
-        Game::Game(Options& options): m_options(options), m_playerControl(&m_input){
+        CGame::CGame(const SOptions & options)
+            : Options(options),
+            Controls(&Input),
+            RocketMesh(0)
+        {
             init();
         }
 
-        void Game::run()
+        void CGame::run()
         {
-            u32 then = m_device->getTimer()->getTime();
+            u32 then = Device->getTimer()->getTime();
 
-            while(m_device->run()) {                
-                const u32 now = m_device->getTimer()->getTime();        
+            while(Device->run()) {                
+                const u32 now = Device->getTimer()->getTime();        
                 const f32 frameDeltaTime = (f32)(now - then) / 1000.f;
 
                 updateFPS();
@@ -28,61 +32,69 @@ namespace stellabellum {
             }
         }
 
-        Game::~Game() {
-            m_device->drop();
+        CGame::~CGame() {
+            Device->drop();
         }
 
-        void Game::init() {
-            core::dimension2d<u32> windowSize(m_options.Width, m_options.Height);
+        void CGame::init() {
+            core::dimension2d<u32> windowSize(Options.Width, Options.Height);
             
-            m_device = createDevice(m_options.Driver, windowSize, 16,
-                false, false, false, dynamic_cast<IEventReceiver*>(&m_input));
+            Device = createDevice(Options.Driver, windowSize, 16,
+                false, false, false, dynamic_cast<IEventReceiver*>(&Input));
 
-            if (!m_device) {
+            if (!Device) {
                 throw std::exception("Cannot initialize rendering device.");
             }
 
-            m_input.initGamepads(m_device);
+            Input.initGamepads(Device);
 
-            m_driver = m_device->getVideoDriver();
-            m_scene = m_device->getSceneManager();
+            Driver = Device->getVideoDriver();
+            Scene = Device->getSceneManager();
         }
 
-        void Game::render() {
-            Screen* scr = getActiveScreen();
+        void CGame::render() {
+            CScreen* scr = getActiveScreen();
 
             if (scr) {
-                m_driver->beginScene(true, true, scr->getBgColor());
+                Driver->beginScene(true, true, scr->getBgColor());
                 scr->render();
-                m_driver->endScene();
+                Driver->endScene();
             }
         }
 
-        Screen* Game::getActiveScreen() {
-            return dynamic_cast<Screen *>(getCurrentState());
+        CScreen* CGame::getActiveScreen() {
+            return dynamic_cast<CScreen *>(getCurrentState());
         }
 
-        void Game::updateFPS() {
-            int fps = m_driver->getFPS();
-            if (m_fps != fps) {
-                m_fps = fps;
+        void CGame::updateFPS() {
+            int fps = Driver->getFPS();
+            if (FramesPerSecond != fps) {
+                FramesPerSecond = fps;
 
-                core::stringw tmp(m_title);
+                core::stringw tmp(Title);
                 tmp += L" - [";
-                tmp += m_driver->getName();
+                tmp += Driver->getName();
                 tmp += L"] fps: ";
                 tmp += fps;
 
-                m_device->setWindowCaption(tmp.c_str());
+                Device->setWindowCaption(tmp.c_str());
             }
         }
 
-        ISceneManager* Game::createNewScene() {
-            ISceneManager* scene = m_scene->createNewSceneManager();
+        ISceneManager* CGame::createNewScene() {
+            ISceneManager* scene = Scene->createNewSceneManager();
             return scene;
         }
 
-        const wchar_t* Game::m_title = L"Stella Bellum";
+        scene::IAnimatedMesh* CGame::getRocketMesh() {
+            if (!RocketMesh) {
+                RocketMesh = Scene->getMesh("d:\\xpn_2013\\export\\rocket.X");
+            }
+
+            return RocketMesh;
+        }
+
+        const wchar_t* CGame::Title = L"Stella Bellum";
 
     }
 }

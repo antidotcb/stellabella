@@ -12,77 +12,77 @@ using namespace scene;
 #include "Input.h"
 
 namespace stellabellum {
-
     namespace game {
 
-        class Input;
-        class Screen;
-        class PlayerControl;
-
-        class Game : public states::StateMachine
+        class CGame : public states::CStateMachine
         {
         protected:
-            static const u32 DefaultWidth = 1024;
-            static const u32 DefaultHeight = 768;
+            static const u32 DefaultWidth = 1900;
+            static const u32 DefaultHeight = 1000;
             static const video::E_DRIVER_TYPE DefaultDriverType = video::EDT_OPENGL;
 
         public:
-            struct Options {
+            struct SOptions {
                 u32 Width;
                 u32 Height;
                 video::E_DRIVER_TYPE Driver;
-                Options():
+                SOptions():
                 Width(DefaultWidth),
                     Height(DefaultHeight),
                     Driver(DefaultDriverType) {}
             };
 
-            Game(Options& options);
-            ~Game();
+            CGame(const SOptions& options);
+            ~CGame();
 
             void run();
 
             ISceneManager* createNewScene();
 
-            const int& getFPS() const { return m_fps;}
+            const int& getFPS() inline const { return FramesPerSecond; }
 
-            IrrlichtDevice* getDevice() const { return m_device; }            
-            /*
-            video::ITexture* getRocketTexture(core::stringw texture) {
-                return m_driver->getTexture("d:\\xpn_2013\\export\\rocket.tga");
+            IrrlichtDevice* getDevice() const { return Device; }            
+
+            scene::IAnimatedMesh* getRocketMesh();
+
+            video::ITexture* getRocketTexture() {
+                return Driver->getTexture("d:\\xpn_2013\\export\\rocket.tga");
             }
 
-            video::ITexture* getAsteroidTexture(core::stringw texture) {
-                return m_driver->getTexture("d:\\xpn_2013\\export\\asteroid.tga");
-            }
-            */
-
-            video::ITexture* getPlayerTexture(core::stringw texture) {
-                return m_driver->getTexture("d:\\xpn_2013\\export\\fighter.tga");
+            video::ITexture* getAsteroidTexture() {
+                return Driver->getTexture("d:\\xpn_2013\\export\\asteroid.tga");
             }
 
-            const PlayerControl& getPlayerControl() inline const { return m_playerControl; }
+            video::ITexture* getPlayerTexture() {
+                return Driver->getTexture("d:\\xpn_2013\\export\\fighter.tga");
+            }
+
+            const CControls& getControls() inline const { return Controls; }
+
+            const u32& getWidth() inline const { return Options.Width; }
+            const u32& getHeight() inline const { return Options.Height; }
         protected:
             void init();
             void updateFPS();
             void render();
 
-            Screen* getActiveScreen();
+            CScreen* getActiveScreen();
 
-            const Input& getRawInput() const { return m_input; }
+            const CInput& getRawInput() const { return Input; }
         private:
-            Options m_options;
-            Input m_input;
-            PlayerControl m_playerControl;
+            SOptions Options;
+            CInput Input;
+            CControls Controls;
 
-            IrrlichtDevice* m_device;
-            video::IVideoDriver* m_driver;
-            scene::ISceneManager* m_scene;
-            
+            IrrlichtDevice* Device;
+            video::IVideoDriver* Driver;
+            scene::ISceneManager* Scene;
 
-            static const wchar_t* m_title;
+            static const wchar_t* Title;
 
-            int m_fps;
+            scene::IAnimatedMesh* RocketMesh;
+
+            int FramesPerSecond;
         };
 
     }

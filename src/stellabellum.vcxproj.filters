@@ -57,6 +57,9 @@
     <ClInclude Include="Input.h">
       <Filter>stellabellum\game</Filter>
     </ClInclude>
+    <ClInclude Include="Rocket.h">
+      <Filter>stellabellum\entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -90,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="Screen.cpp">
       <Filter>stellabellum\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Rocket.cpp">
+      <Filter>stellabellum\entities</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

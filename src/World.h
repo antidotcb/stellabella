@@ -5,23 +5,42 @@
 namespace stellabellum {
     namespace game {
 
-        class World
-        {
+        class CWorld {
         public:
-            World(scene::ICameraSceneNode* camera);
+            CWorld(scene::ISceneManager* scene, game::CGame* game);
 
-            void init(game::Game* g, scene::ISceneManager* mgr);
+            ~CWorld();
 
-            void update(game::Game* g, f32 delta);
+            void update( f32 delta);
 
-            ~World();
+            void addEntity(entities::CEntity* entity);
+
+            void /*entities::CEntity**/ shotRocket(entities::CEntity * parent,
+                core::vector3df& position,
+                core::vector3df& velocity,
+                core::vector3df& acceleration);
+
+            entities::CEntity* createPlayer(const core::vector3df& playerPosition);
 
         private:
-            scene::ICameraSceneNode* m_camera;
-            entities::Player* m_player;
+            void addCamera(game::CGame* game, scene::ISceneManager* scene);
 
-            typedef std::list<entities::Entity *> m_entities;
-            typedef std::list<entities::Entity *> m_newEntities;
+            void setupConstrains(entities::CEntity* entity);
+
+            const f32 getMaxX(const entities::CEntity* entity) const;
+            const f32 getMinX(const entities::CEntity* entity) const;
+            const f32 getMaxY(const entities::CEntity* entity) const;
+            const f32 getMinY(const entities::CEntity* entity) const;
+
+            scene::ISceneManager* Scene;
+            scene::ICameraSceneNode* Camera;
+            entities::CPlayer* Player;
+            game::CGame* Game;
+
+            typedef std::list<entities::CEntity *> EntityList;
+            
+            EntityList Entities;
+            EntityList NewEntities;
         };
 
     }

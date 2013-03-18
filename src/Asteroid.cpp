@@ -1,34 +1,34 @@
 #include "stellabellum.h"
+#include "Entity.h"
 #include "Asteroid.h"
 
 namespace stellabellum {
     namespace entities {
 
-        Asteroid::Asteroid(game::World* world, scene::ISceneNode* parent,
+        CAsteroid::CAsteroid(game::CWorld* world, scene::ISceneNode* parent,
             scene::ISceneManager* mgr, s32 id,
             scene::IAnimatedMesh* mesh, video::ITexture* tex,
             const core::vector3df& position,
             const core::vector3df& rotation,
             const core::vector3df& scale)
 
-            :Entity(0, parent, mgr, id, position, rotation, scale )
+            :CEntity(world, mgr, position, rotation, scale)
         {
             scene::IAnimatedMeshSceneNode* asteroidMeshNode =
                 mgr->addAnimatedMeshSceneNode(mesh, this, id);
 
-            asteroidMeshNode->setMaterialTexture(0, tex);
-            asteroidMeshNode->setMaterialFlag(video::EMF_LIGHTING, false);
+
         }
 
-        bool Asteroid::update(const float delta) {
-            m_velocity += m_acceleration;
+        bool CAsteroid::update(const game::CGame *, const float delta) {
+            Velocity += Acceleration;
 
             core::vector3df position = getPosition();
-            core::vector3df positionChange = m_velocity * delta;
+            core::vector3df positionChange = Velocity * delta;
             setPosition(position + positionChange);
 
             core::vector3df rotation = this->getRotation();
-            core::vector3df rotationChange = m_angularvelocity * delta;
+            core::vector3df rotationChange = AngularVelocity * delta;
             setRotation(rotation + rotationChange);
 
             return true;

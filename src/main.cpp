@@ -4,17 +4,19 @@
 
 using namespace stellabellum;
 
-class StellaBellum: public game::Game {
+class StellaBellum: public game::CGame {
 public:
-    StellaBellum(Options& options): game::Game(options) {
-        addState(new DefaultScreen());
+    StellaBellum(const SOptions& options)
+        : game::CGame(options)
+    {
+        addState(new CMainGameScreen());
     }
 };
 
 int APIENTRY _tWinMain(HINSTANCE hInst, HINSTANCE, LPTSTR, int) {
     int result = -1;
     try {
-        game::Game::Options options;
+        game::CGame::SOptions options;
         StellaBellum game(options);
         game.run();
         result = 0;

@@ -3,12 +3,12 @@
 namespace stellabellum {
     namespace states {
 
-        class StateMachine;
+        class CStateMachine;
 
-        class State {
+        class CState {
         public:
-            State();
-            virtual ~State(void);
+            CState();
+            virtual ~CState(void);
 
             virtual void enter() = 0;
             virtual void leave() = 0;
@@ -16,19 +16,19 @@ namespace stellabellum {
 
             virtual void update(const f32 delta) = 0;
 
-            virtual int getId() = 0;            
+            virtual int getId() const = 0;            
         protected:
-            virtual StateMachine* getStateMachine() inline const {
-                return m_machine;
+            virtual CStateMachine* getStateMachine() inline const {
+                return Machine;
             }
 
         private:
-            void setup(StateMachine* machine);
+            void setup(CStateMachine* machine);
 
-            bool m_inited;
-            StateMachine* m_machine;
+            bool IsInited;
+            CStateMachine* Machine;
 
-            friend class StateMachine;
+            friend class CStateMachine;
         };
 
     }

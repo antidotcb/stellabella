@@ -6,20 +6,22 @@ using namespace irr;
 
 namespace stellabellum {
     namespace states {
-        class State;
-        class StateMachine;
+        class CState;
+        class CStateMachine;
     }
 
     namespace entities {
-        class Entity;
-        class Asteroid;
-        class Player;
+        class CEntity;
+        class CAsteroid;
+        class CPlayer;
     }
 
     namespace game {
-        class World;
-        class GameDirector;
-        class Screen;
-        class Game;
+        class CWorld;
+        class CGameDirector;
+        class CScreen;
+        class CGame;
     }
 }
+
+#include <boost/foreach.hpp>

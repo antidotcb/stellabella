@@ -4,44 +4,43 @@
 namespace stellabellum {
     namespace game {
 
-        Input::Input()
-            : m_GamepadCount(0)
+        CInput::CInput()
+            : GamepadCount(0)
         {
             for (u32 i=0; i<KEY_KEY_CODES_COUNT; ++i)
-                m_keyPressed[i] = false;
+                IsKeyPressed[i] = false;
         }
 
-        Input::~Input() {
+        CInput::~CInput() {
             // empty
         }
 
-        bool Input::OnEvent(const SEvent& event) {
-            if (event.EventType == irr::EET_KEY_INPUT_EVENT)
-                m_keyPressed[event.KeyInput.Key] = event.KeyInput.PressedDown;
+        bool CInput::OnEvent(const SEvent& event) {
+            if (core::equals(event.EventType, irr::EET_KEY_INPUT_EVENT)) {
+                IsKeyPressed[event.KeyInput.Key] = event.KeyInput.PressedDown;
+            }
 
-            if (event.EventType == irr::EET_MOUSE_INPUT_EVENT)
-            {
-                switch(event.MouseInput.Event)
-                {
+            if (core::equals(event.EventType, irr::EET_MOUSE_INPUT_EVENT)) {
+                switch(event.MouseInput.Event) {
                 case EMIE_RMOUSE_PRESSED_DOWN:
-                    m_mouseState.RightBtnPressed = true;
+                    MouseState.RightBtnPressed = true;
                     break;
 
                 case EMIE_RMOUSE_LEFT_UP:
-                    m_mouseState.RightBtnPressed = false;
+                    MouseState.RightBtnPressed = false;
                     break;
 
                 case EMIE_LMOUSE_PRESSED_DOWN:
-                    m_mouseState.LeftBtnPressed = true;
+                    MouseState.LeftBtnPressed = true;
                     break;
 
                 case EMIE_LMOUSE_LEFT_UP:
-                    m_mouseState.LeftBtnPressed = false;
+                    MouseState.LeftBtnPressed = false;
                     break;
 
                 case EMIE_MOUSE_MOVED:
-                    m_mouseState.Position.X = event.MouseInput.X;
-                    m_mouseState.Position.Y = event.MouseInput.Y;
+                    MouseState.Position.X = event.MouseInput.X;
+                    MouseState.Position.Y = event.MouseInput.Y;
                     break;
 
                 default:
@@ -49,60 +48,61 @@ namespace stellabellum {
                 }
             }
 
-            for (u32 i = 0; i < m_GamepadCount; i++) {
-                if (event.EventType == irr::EET_JOYSTICK_INPUT_EVENT
-                    && event.JoystickEvent.Joystick == i) {
-                        m_GamepadState[i] = event.JoystickEvent;
+            for (u32 i = 0; i < GamepadCount; i++) {
+                u32 gamepad = (u32)event.JoystickEvent.Joystick;
+                if (core::equals(event.EventType, irr::EET_JOYSTICK_INPUT_EVENT)
+                    && core::equals(gamepad, i)) {
+                        GamepadStates[i] = event.JoystickEvent;
                 }
             }
 
             return false;
         }
 
-        const Input::MouseState& Input::getMouseState() const {
-            return m_mouseState;
+        const CInput::SMouseState& CInput::getMouseState() const {
+            return MouseState;
         }
 
-        bool Input::isKeyPressed(const EKEY_CODE keyCode) const {
-            return m_keyPressed[keyCode];
+        bool CInput::isKeyPressed(const EKEY_CODE keyCode) const {
+            return IsKeyPressed[keyCode];
         }
 
-        const Input::GamepadState& Input::getGamepadState(const u32 j) const {
-            return m_GamepadState[j];
+        const CInput::SGamepadState& CInput::getGamepadState(const u32 j) const {
+            return GamepadStates[j];
         }
 
-        const bool Input::isGamepadAvailable( const u32 j ) const {
-            return j < m_GamepadCount;
+        const bool CInput::isGamepadAvailable( const u32 j ) const {
+            return j < GamepadCount;
         }
 
-        void Input::initGamepads(IrrlichtDevice* device) {
-            device->activateJoysticks(m_GamepadInfo);
+        void CInput::initGamepads(IrrlichtDevice* device) {
+            device->activateJoysticks(GamepadInfos);
 
-            m_GamepadCount = m_GamepadInfo.size();
-            for(int i = m_GamepadCount; i--;) {
-                m_GamepadState.push_back(GamepadState());
+            GamepadCount = GamepadInfos.size();
+            for(int i = GamepadCount; i--;) {
+                GamepadStates.push_back(SGamepadState());
             }
         }
 
 
-        Input::MouseState::MouseState()
+        CInput::SMouseState::SMouseState()
             :LeftBtnPressed(false),
             RightBtnPressed(false) {}
 
 
-        PlayerControl::PlayerControl(game::Input* input)
-            : m_input(input),
-            m_GamepadNum(0)
+        CControls::CControls(game::CInput* input)
+            : Input(input),
+            Gamepad(0)
         {
         }
 
-        bool PlayerControl::isFirePressed() const {
-            bool keyPressed = m_input->isKeyPressed(getFireKey());
+        bool CControls::isFirePressed() const {
+            bool keyPressed = Input->isKeyPressed(getFireKey());
             bool buttonPressed = false;
 
-            if (m_input->isGamepadAvailable(m_GamepadNum)) {
-                const Input::GamepadState& joyState =
-                    m_input->getGamepadState(m_GamepadNum);
+            if (Input->isGamepadAvailable(Gamepad)) {
+                const CInput::SGamepadState& joyState =
+                    Input->getGamepadState(Gamepad);
 
                 buttonPressed = joyState.IsButtonPressed(getFireButton());
             }
@@ -110,35 +110,35 @@ namespace stellabellum {
             return  keyPressed || buttonPressed;
         }
 
-        void PlayerControl::getMovement(core::vector2df& movement) const {            
+        void CControls::getMovement(core::vector2df& movement) const {            
             if (!getGamepadMovement(movement)) {
-                const Input::MouseState& mState = m_input->getMouseState();
+                const CInput::SMouseState& mState = Input->getMouseState();
                 
-                if (m_input->isKeyPressed(getLeftKey())) {
+                if (Input->isKeyPressed(getLeftKey())) {
                     movement.X -= 1.f;
                 }
 
-                if (m_input->isKeyPressed(getRightKey())) {
+                if (Input->isKeyPressed(getRightKey())) {
                     movement.X += 1.f;
                 }
 
-                if (m_input->isKeyPressed(getUpKey())) {
+                if (Input->isKeyPressed(getUpKey())) {
                     movement.Y += 1.f;
                 }
 
-                if (m_input->isKeyPressed(getDownKey())) {
+                if (Input->isKeyPressed(getDownKey())) {
                     movement.Y -= 1.f;
                 }
             }
         }
 
-        bool PlayerControl::getGamepadMovement(core::vector2df& movement) const {
-            if (!m_input->isGamepadAvailable(m_GamepadNum)) {
+        bool CControls::getGamepadMovement(core::vector2df& movement) const {
+            if (!Input->isGamepadAvailable(Gamepad)) {
                 return false;
             }
 
-            const stellabellum::game::Input::GamepadState & joyState = 
-                m_input->getGamepadState(m_GamepadNum);
+            const stellabellum::game::CInput::SGamepadState& joyState = 
+                Input->getGamepadState(Gamepad);
 
             f32 deadZone = getDeadZone();
 
@@ -147,11 +147,11 @@ namespace stellabellum {
 
             u32 vAxis = getVerticalAxis();
             vMove = (f32) joyState.Axis[vAxis] / -32767.f;
-            vMove = (fabs(vMove) < m_deadZone) ? 0.f : vMove;
+            vMove = (fabs(vMove) < DeadZone) ? 0.f : vMove;
 
             u32 hAxis = getHorizontalAxis();
             hMove = (f32) joyState.Axis[hAxis] / 32767.f;
-            hMove = (fabs(hMove) < m_deadZone) ? 0.f : hMove;
+            hMove = (fabs(hMove) < DeadZone) ? 0.f : hMove;
 
             if (core::equals(hMove, 0.f) && core::equals(vMove, 0.f)) {
                 return false;
@@ -163,7 +163,7 @@ namespace stellabellum {
             }
         }
 
-        const f32 PlayerControl::m_deadZone = 0.05f;
+        const f32 CControls::DeadZone = 0.05f;
 
     }
 }

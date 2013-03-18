@@ -4,40 +4,96 @@
 namespace stellabellum {
     namespace entities {
 
-        Entity::Entity(game::World* world, scene::ISceneNode* parent,
-            scene::ISceneManager* mgr, s32 id,
+        CEntity::CEntity(game::CWorld* world, scene::ISceneManager* scene,
             const core::vector3df& position,
             const core::vector3df& rotation,
             const core::vector3df& scale)
 
-            :ISceneNode(parent, mgr, id, position, rotation, scale),
-            m_acceleration(0,0,0),
-            m_velocity(0,0,0),
-            m_type(GenericEntity),
-            m_world(world)
+            :ISceneNode(scene->getRootSceneNode(), scene, -1, position, rotation, scale),
+            Acceleration(0,0,0), Velocity(0,0,0), AngularVelocity(0,0,0),
+            Type(GenericEntity),
+            World(world),
+            Node(0), Width(0), Height(0)
         {
             setAutomaticCulling(scene::EAC_OFF);
         }
 
-        Entity::EntityType Entity::getType() {
-            return m_type;
+        CEntity::EntityType CEntity::getType() {
+            return Type;
         }
 
-        bool Entity::isFixedPosition() {
+        bool CEntity::isFixedPosition() {
             return false;
         }
 
-        void Entity::render() {}
+        void CEntity::render() {}
 
-        void Entity::OnRegisterSceneNode() {
+        void CEntity::OnRegisterSceneNode() {
             if (IsVisible)
                 SceneManager->registerNodeForRendering(this);
 
             ISceneNode::OnRegisterSceneNode();
         }
 
-        const core::aabbox3d<f32>& Entity::getBoundingBox() const {
-            return m_box;
+        const core::aabbox3d<f32>& CEntity::getBoundingBox() const {
+            return Box;
+        }
+
+        void CEntity::setTexture(video::ITexture* texture) {
+            if (!texture) {
+                throw std::exception("Empty texture param.");
+            }
+
+            if (Node) {
+                Node->setMaterialTexture(0, texture);
+                Node->setMaterialFlag(video::EMF_LIGHTING, false);
+            } else {
+                throw std::exception("No child node attached for texture.");
+            }
+        }
+
+        void CEntity::setMesh(scene::IAnimatedMesh* mesh) {
+            if (Node) {
+                Node->drop();
+                Node->remove();
+                Node = 0;
+            }
+
+            Box.reset(core::vector3df());
+
+            if (mesh) {
+                Node = getSceneManager()->addAnimatedMeshSceneNode(mesh, this);
+                Node->grab();
+                
+                Box.addInternalBox(mesh->getBoundingBox());
+                updateSizes();
+            }
+        }
+
+        CEntity::~CEntity() {
+            setMesh(0);
+        }
+
+        void CEntity::setConstrains(const core::aabbox3df& box) {
+            Constrains = box;
+        }
+
+        void CEntity::setVelocity(const core::vector3df& velocity) {
+            Velocity = velocity;
+        }
+
+        void CEntity::setAcceleration(const core::vector3df& acceleration) {
+            Acceleration = acceleration;
+        }
+
+        void CEntity::setAngularVelocity(const core::vector3df& angularVelocity) {
+            AngularVelocity = angularVelocity;
+        }
+
+        void CEntity::updateSizes()
+        {
+            Width = Box.MaxEdge.X - Box.MinEdge.X;
+            Height = Box.MaxEdge.Y - Box.MinEdge.Y;
         }
 
     }

@@ -5,43 +5,43 @@
 namespace stellabellum {
     namespace game {
 
-        void Screen::setBgColor(const video::SColor& color) {
-            m_backgroundColor = color;
+        void CScreen::setBgColor(const video::SColor& color) {
+            BackgroundColor = color;
         }
 
-        Game* Screen::getContainer() {
-            return dynamic_cast<Game*>(getStateMachine());
+        CGame* CScreen::getContainer() {
+            return dynamic_cast<CGame*>(getStateMachine());
         }
 
-        void Screen::dropScene() {
-            if (m_scene) {
-                m_scene->drop();
-                m_scene = 0;
+        void CScreen::dropScene() {
+            if (Scene) {
+                Scene->drop();
+                Scene = 0;
             }
         }
 
-        void Screen::initScene() {
+        void CScreen::initScene() {
             dropScene();
-            m_scene = getContainer()->createNewScene();
+            Scene = getContainer()->createNewScene();
         }
 
-        scene::ISceneManager* Screen::getScene() {
-            return m_scene;
+        scene::ISceneManager* CScreen::getScene() {
+            return Scene;
         }
 
-        Screen::~Screen() {
+        CScreen::~CScreen() {
             dropScene();
         }
 
-        void Screen::render() {
-            m_scene->drawAll();
+        void CScreen::render() {
+            Scene->drawAll();
         }
 
-        void Screen::init() {
+        void CScreen::init() {
             initScene();
         }
 
-        Screen::Screen() : m_scene(0), m_backgroundColor(255,255,0,255) {
+        CScreen::CScreen() : Scene(0), BackgroundColor(255,255,0,255) {
 
         }
 

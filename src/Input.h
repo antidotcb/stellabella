@@ -3,83 +3,83 @@
 namespace stellabellum {
     namespace game {
 
-        class Input: public IEventReceiver {
+        class CInput: public IEventReceiver {
         public:
-            Input();
+            CInput();
 
-            virtual ~Input();
+            virtual ~CInput();
 
             virtual bool OnEvent(const SEvent& event);
 
-            typedef SEvent::SJoystickEvent GamepadState;
+            typedef SEvent::SJoystickEvent SGamepadState;
 
-            struct MouseState {
+            struct SMouseState {
                 bool LeftBtnPressed;
                 bool RightBtnPressed;
                 core::position2di Position;
 
-                MouseState();
+                SMouseState();
             };
 
             virtual bool isKeyPressed(const EKEY_CODE keyCode) const;
             
-            virtual const MouseState& getMouseState() const;
+            virtual const SMouseState& getMouseState() const;
 
-            virtual const GamepadState& getGamepadState(const u32 joy) const;
+            virtual const SGamepadState& getGamepadState(const u32 joy) const;
             
             virtual const bool isGamepadAvailable(const u32 joy) const;
 
             virtual void initGamepads(IrrlichtDevice* device);
 
         private:
-            core::array<SJoystickInfo> m_GamepadInfo;
-            u32 m_GamepadCount;
+            core::array<SJoystickInfo> GamepadInfos;
+            u32 GamepadCount;
 
-            bool m_keyPressed[KEY_KEY_CODES_COUNT];
-            core::array<GamepadState> m_GamepadState;
-            MouseState m_mouseState;
+            bool IsKeyPressed[KEY_KEY_CODES_COUNT];
+            core::array<SGamepadState> GamepadStates;
+            SMouseState MouseState;
         };
 
 
-        class PlayerControl {
+        class CControls {
         public:
-            PlayerControl(game::Input* input);
+            CControls(game::CInput* input);
 
             bool isFirePressed() const;
 
             void getMovement(core::vector2df& movement) const;
 
         private:
-            const f32 getDeadZone() inline const        { return m_deadZone ; }
+            const f32 getDeadZone() inline const        { return DeadZone ; }
 
-            const EKEY_CODE getUpKey() inline const     { return m_upKey; }
-            const EKEY_CODE getDownKey() inline const   { return m_downKey; }
-            const EKEY_CODE getLeftKey() inline const   { return m_leftKey; }
-            const EKEY_CODE getRightKey() inline const  { return m_rightKey; }
-            const EKEY_CODE getFireKey() inline const   { return m_fireKey; }
+            const EKEY_CODE getUpKey() inline const     { return UpKey; }
+            const EKEY_CODE getDownKey() inline const   { return DownKey; }
+            const EKEY_CODE getLeftKey() inline const   { return LeftKey; }
+            const EKEY_CODE getRightKey() inline const  { return RightKey; }
+            const EKEY_CODE getFireKey() inline const   { return FireKey; }
 
-            const u32 getFireButton() inline const      { return m_fireButton; }
-            const u32 getHorizontalAxis() inline const  { return m_hAxis; }
-            const u32 getVerticalAxis() inline const    { return m_vAxis; }
+            const u32 getFireButton() inline const      { return FireButton; }
+            const u32 getHorizontalAxis() inline const  { return AxisH; }
+            const u32 getVerticalAxis() inline const    { return AxisV; }
 
-            bool getGamepadMovement(core::vector2df & movement) const;
+            bool getGamepadMovement(core::vector2df& movement) const;
 
-            u32 m_GamepadNum;
+            u32 Gamepad;
 
-            game::Input* m_input;
+            game::CInput* Input;
 
-            static const EKEY_CODE m_fireKey    = KEY_SPACE;
-            static const EKEY_CODE m_upKey      = KEY_UP;
-            static const EKEY_CODE m_downKey    = KEY_DOWN;
-            static const EKEY_CODE m_leftKey    = KEY_LEFT;
-            static const EKEY_CODE m_rightKey   = KEY_RIGHT;
+            static const EKEY_CODE FireKey    = KEY_SPACE;
+            static const EKEY_CODE UpKey      = KEY_UP;
+            static const EKEY_CODE DownKey    = KEY_DOWN;
+            static const EKEY_CODE LeftKey    = KEY_LEFT;
+            static const EKEY_CODE RightKey   = KEY_RIGHT;
 
-            static const u32 m_fireButton = 0;
+            static const u32 FireButton = 0;
 
-            static const u32 m_hAxis = game::Input::GamepadState::AXIS_X;
-            static const u32 m_vAxis = game::Input::GamepadState::AXIS_Y;
+            static const u32 AxisH = game::CInput::SGamepadState::AXIS_X;
+            static const u32 AxisV = game::CInput::SGamepadState::AXIS_Y;
 
-            static const f32 m_deadZone;
+            static const f32 DeadZone;
         };
     }
 }
